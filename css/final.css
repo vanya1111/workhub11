@@ -1,0 +1,121 @@
+/* ═══════════════════════════════════════════
+   WorkHub — Фінальні стилі
+   (публічний профіль, новини, доповнення)
+═══════════════════════════════════════════ */
+
+/* ── Публічний банер ── */
+.public-user-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(59,130,246,0.06);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.pub-banner-icon { font-size: 1.5rem; flex-shrink: 0; }
+.pub-banner-text { flex: 1; min-width: 200px; }
+.pub-banner-text strong { font-size: 0.92rem; font-weight: 700; display: block; margin-bottom: 3px; }
+.pub-banner-text p { font-size: 0.82rem; color: var(--text-soft); line-height: 1.5; }
+
+/* ── Публічний контент ── */
+.public-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ── Публічні відділи ── */
+.public-depts-list { display: flex; flex-direction: column; gap: 10px; }
+.public-dept-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.public-dept-item:hover { border-color: var(--border-hover); }
+.pub-dept-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.pub-dept-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 2px; }
+.pub-dept-desc { font-size: 0.74rem; color: var(--text-muted); }
+
+/* ── Публічні новини — фільтри ── */
+.pub-news-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* ── Публічні новини — сітка ── */
+.pub-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* ── My Space додаткові стилі ── */
+.tab-content { animation: fadeIn 0.2s ease; }
+
+/* ── Dept Hero доповнення ── */
+.dept-hero-info p { max-width: 500px; }
+
+/* ── Docs viewer hint ── */
+.doc-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: rgba(124,58,237,0.04);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Канбан доповнення ── */
+.kanban-board { min-height: 400px; }
+
+/* ── Admin tab ── */
+.admin-tab { min-height: 300px; }
+
+/* ── Empty state global ── */
+.global-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+.global-empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
+.global-empty h3   { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.global-empty p    { font-size: 0.83rem; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+/* ── Selection color ── */
+::selection { background: rgba(124,58,237,0.3); color: #fff; }
+
+/* ── Focus outline ── */
+*:focus-visible { outline: 2px solid rgba(124,58,237,0.5); outline-offset: 2px; }
+
+/* ── Адаптивність ── */
+@media (max-width: 768px) {
+  .public-content-grid { grid-template-columns: 1fr; }
+  .public-user-banner  { flex-direction: column; align-items: flex-start; }
+}

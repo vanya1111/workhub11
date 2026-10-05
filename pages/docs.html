@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Документи — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/notes.css"/>
+  <link rel="stylesheet" href="../css/my-space.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div>
+        <span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Головне</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="sl-icon">📊</span> Дашборд</a>
+      <a href="my-space.html"  class="sidebar-link"><span class="sl-icon">👤</span> Мій простір</a>
+      <a href="tasks.html"     class="sidebar-link"><span class="sl-icon">✅</span> Задачі</a>
+      <a href="notes.html"     class="sidebar-link"><span class="sl-icon">📝</span> Нотатки</a>
+      <div class="nav-section-label">Відділ</div>
+      <a href="department.html" class="sidebar-link"><span class="sl-icon">📁</span> Мій відділ</a>
+      <a href="docs.html"       class="sidebar-link active"><span class="sl-icon">📄</span> Документи</a>
+      <a href="team.html"       class="sidebar-link"><span class="sl-icon">👥</span> Команда</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Документи</div>
+      <div class="topbar-right">
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="docs-layout">
+
+        <!-- Список документів -->
+        <div class="docs-sidebar">
+          <div class="docs-sidebar-header">
+            <h2>Документи</h2>
+          </div>
+          <div class="docs-list" id="docsList"></div>
+        </div>
+
+        <!-- Перегляд документа -->
+        <div class="docs-viewer" id="docsViewer">
+          <div class="docs-empty-state" id="docsEmptyState">
+            <div class="notes-empty-icon">📄</div>
+            <h3>Оберіть документ</h3>
+            <p>Виберіть документ зі списку зліва</p>
+          </div>
+
+          <div class="doc-content-wrap" id="docContentWrap" style="display:none">
+            <div class="doc-content-header">
+              <div>
+                <h2 id="docTitle"></h2>
+                <div class="doc-meta" id="docMeta"></div>
+              </div>
+              <div class="doc-actions" id="docActions"></div>
+            </div>
+
+            <!-- Підказка про виділення -->
+            <div class="doc-hint">
+              💡 Виділіть будь-який текст щоб додати його в нотатки
+            </div>
+
+            <div class="doc-content doc-text-selectable" id="docContent"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Popup при виділенні тексту -->
+  <div class="selection-popup" id="selectionPopup" style="display:none">
+    <button class="sel-btn sel-btn-note" onclick="addSelectionToNote()">📝 В нотатки</button>
+    <button class="sel-btn sel-btn-copy" onclick="copySelection()">📋 Копіювати</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/docs.js"></script>
+  <script>
+    const session = requireEmployee();
+    if (session) initDocs(session);
+  </script>
+</body>
+</html>

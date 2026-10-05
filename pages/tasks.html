@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Задачі — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/tasks.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div><span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Головне</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="sl-icon">📊</span> Дашборд</a>
+      <a href="my-space.html"  class="sidebar-link"><span class="sl-icon">👤</span> Мій простір</a>
+      <a href="tasks.html"     class="sidebar-link active"><span class="sl-icon">✅</span> Задачі</a>
+      <a href="notes.html"     class="sidebar-link"><span class="sl-icon">📝</span> Нотатки</a>
+      <div class="nav-section-label">Відділ</div>
+      <a href="department.html" class="sidebar-link"><span class="sl-icon">📁</span> Мій відділ</a>
+      <a href="docs.html"       class="sidebar-link"><span class="sl-icon">📄</span> Документи</a>
+      <a href="team.html"       class="sidebar-link"><span class="sl-icon">👥</span> Команда</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Мої задачі</div>
+      <div class="topbar-right">
+        <div id="addTaskBtnWrap"></div>
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+
+      <!-- Фільтри -->
+      <div class="tasks-toolbar">
+        <div class="tasks-filters">
+          <button class="tasks-filter-btn active" onclick="filterTasks('all', this)">Всі</button>
+          <button class="tasks-filter-btn" onclick="filterTasks('todo', this)">📋 Нові</button>
+          <button class="tasks-filter-btn" onclick="filterTasks('in_progress', this)">⚡ В процесі</button>
+          <button class="tasks-filter-btn" onclick="filterTasks('done', this)">✅ Виконані</button>
+        </div>
+        <div class="tasks-sort">
+          <select id="tasksSortSelect" onchange="sortTasks(this.value)">
+            <option value="date_desc">Новіші спочатку</option>
+            <option value="date_asc">Старіші спочатку</option>
+            <option value="priority">За пріоритетом</option>
+            <option value="due">За дедлайном</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Колонки Kanban -->
+      <div class="kanban-board" id="kanbanBoard">
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <span class="kanban-col-dot todo"></span>
+            <span>Нові</span>
+            <span class="kanban-col-count" id="countTodo">0</span>
+          </div>
+          <div class="kanban-cards" id="colTodo"></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <span class="kanban-col-dot progress"></span>
+            <span>В процесі</span>
+            <span class="kanban-col-count" id="countProgress">0</span>
+          </div>
+          <div class="kanban-cards" id="colProgress"></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-header">
+            <span class="kanban-col-dot done"></span>
+            <span>Виконані</span>
+            <span class="kanban-col-count" id="countDone">0</span>
+          </div>
+          <div class="kanban-cards" id="colDone"></div>
+        </div>
+      </div>
+
+      <!-- Список (альтернативний вигляд) -->
+      <div class="tasks-list-view" id="tasksListView" style="display:none">
+        <div id="tasksList"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Модалка додавання задачі (для manager/admin) -->
+  <div class="modal-overlay" id="addTaskModal" onclick="closeModalOutside(event,'addTaskModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('addTaskModal')">✕</button>
+      <h2 class="modal-title">Нова задача</h2>
+      <form onsubmit="submitAddTask(event)">
+        <div class="form-group">
+          <label>Назва задачі</label>
+          <input type="text" id="newTaskTitle" placeholder="Що потрібно зробити?" required/>
+        </div>
+        <div class="form-group">
+          <label>Опис</label>
+          <textarea id="newTaskDesc" rows="3" placeholder="Деталі задачі..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Виконавець</label>
+            <select id="newTaskAssignee"></select>
+          </div>
+          <div class="form-group">
+            <label>Пріоритет</label>
+            <select id="newTaskPriority">
+              <option value="low">Низький</option>
+              <option value="medium" selected>Середній</option>
+              <option value="high">Високий</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Дедлайн</label>
+          <input type="date" id="newTaskDue"/>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Створити задачу</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Модалка деталей задачі -->
+  <div class="modal-overlay" id="taskDetailModal" onclick="closeModalOutside(event,'taskDetailModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('taskDetailModal')">✕</button>
+      <div id="taskDetailContent"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/tasks.js"></script>
+  <script>
+    const session = requireEmployee();
+    if (session) initTasks(session);
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>403 — Доступ заборонено | WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body>
+  <div class="forbidden-page">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+    </div>
+    <div class="forbidden-box">
+      <div class="forbidden-icon">🔒</div>
+      <div class="forbidden-code">403</div>
+      <h1 class="forbidden-title">Доступ заборонено</h1>
+      <p class="forbidden-desc">
+        У вас немає прав для перегляду цієї сторінки.<br/>
+        Зверніться до адміністратора якщо вважаєте що це помилка.
+      </p>
+      <div class="forbidden-actions">
+        <button class="btn-primary" onclick="history.back()">← Назад</button>
+        <button class="btn-secondary" onclick="window.location.href='../index.html'">На головну</button>
+        <button class="btn-secondary" onclick="logout()">Вийти</button>
+      </div>
+    </div>
+  </div>
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

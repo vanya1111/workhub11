@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Новини — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/my-space.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div><span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Мій простір</div>
+      <a href="public-profile.html" class="sidebar-link">
+        <span class="sl-icon">👤</span> Мій профіль
+      </a>
+      <a href="public-news.html" class="sidebar-link active">
+        <span class="sl-icon">📢</span> Новини
+      </a>
+      <a href="../index.html#departments" class="sidebar-link">
+        <span class="sl-icon">🏢</span> Відділи
+      </a>
+      <a href="../index.html#join" class="sidebar-link">
+        <span class="sl-icon">📩</span> Вакансії
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Новини компанії</div>
+      <div class="topbar-right">
+        <a href="../index.html" class="btn-secondary btn-sm">← На головну</a>
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+
+      <!-- Фільтр за тегом -->
+      <div class="pub-news-filters" id="pubNewsFilters"></div>
+
+      <!-- Список новин -->
+      <div class="pub-news-grid" id="pubNewsGrid"></div>
+
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    const session = requireAuth("user");
+    let activeTag = "all";
+
+    if (session) {
+      renderSidebarUser(session);
+      renderTopbarUser(session);
+      renderPublicNews();
+    }
+
+    function renderPublicNews(tag = "all") {
+      activeTag = tag;
+      const allNews = getNews(true); // тільки публічні
+      const tags    = ["all", ...new Set(allNews.map(n => n.tag))];
+
+      // Фільтри
+      const filtersEl = document.getElementById("pubNewsFilters");
+      if (filtersEl) {
+        filtersEl.innerHTML = tags.map(t => `
+          <button
+            class="tasks-filter-btn ${t === activeTag ? "active" : ""}"
+            onclick="renderPublicNews('${t}')"
+          >
+            ${t === "all" ? "Всі" : escHtml(t)}
+          </button>
+        `).join("");
+      }
+
+      // Новини
+      const filtered = tag === "all" ? allNews : allNews.filter(n => n.tag === tag);
+      const gridEl   = document.getElementById("pubNewsGrid");
+      if (!gridEl) return;
+
+      if (!filtered.length) {
+        gridEl.innerHTML = `<div class="empty-mini" style="grid-column:1/-1;padding:40px">Новин немає</div>`;
+        return;
+      }
+
+      gridEl.innerHTML = filtered.map(n => `
+        <div class="news-card">
+          <div class="news-tag">${escHtml(n.tag)}</div>
+          <h3>${escHtml(n.title)}</h3>
+          <p>${escHtml(n.content)}</p>
+          <div class="news-footer">
+            <span class="news-date">${formatDate(n.date)}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+  </script>
+</body>
+</html>

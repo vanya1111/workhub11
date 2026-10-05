@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Адмін-панель — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div><span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Адмін-панель</div>
+      <a href="#" class="sidebar-link active" onclick="switchAdminTab('users',this)">
+        <span class="sl-icon">👥</span> Користувачі
+      </a>
+      <a href="#" class="sidebar-link" onclick="switchAdminTab('employees',this)">
+        <span class="sl-icon">👤</span> Співробітники
+      </a>
+      <a href="#" class="sidebar-link" onclick="switchAdminTab('news',this)">
+        <span class="sl-icon">📢</span> Новини
+      </a>
+      <a href="#" class="sidebar-link" onclick="switchAdminTab('docs',this)">
+        <span class="sl-icon">📄</span> Документи
+      </a>
+      <a href="#" class="sidebar-link" onclick="switchAdminTab('log',this)">
+        <span class="sl-icon">📋</span> Журнал
+      </a>
+      <a href="#" class="sidebar-link" onclick="switchAdminTab('requests',this)">
+        <span class="sl-icon">📩</span> Заявки
+      </a>
+      <div class="nav-section-label">Навігація</div>
+      <a href="dashboard.html" class="sidebar-link">
+        <span class="sl-icon">📊</span> Дашборд
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="adminTopbarTitle">Адмін-панель</div>
+      <div class="topbar-right">
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+
+      <!-- ── TAB: ПУБЛІЧНІ КОРИСТУВАЧІ ── -->
+      <div id="adminTabUsers" class="admin-tab">
+        <div class="admin-section-header">
+          <h2>Публічні користувачі</h2>
+          <div class="admin-header-actions">
+            <input type="text" class="admin-search" placeholder="🔍 Пошук..." oninput="searchAdminUsers(this.value,'users')"/>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="usersTable">
+            <thead>
+              <tr>
+                <th>Користувач</th>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Дата реєстрації</th>
+                <th>Статус</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── TAB: СПІВРОБІТНИКИ ── -->
+      <div id="adminTabEmployees" class="admin-tab" style="display:none">
+        <div class="admin-section-header">
+          <h2>Співробітники</h2>
+          <div class="admin-header-actions">
+            <input type="text" class="admin-search" placeholder="🔍 Пошук..." oninput="searchAdminUsers(this.value,'employees')"/>
+            <button class="btn-primary btn-sm" onclick="openModal('createEmployeeModal')">+ Новий співробітник</button>
+          </div>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table" id="employeesTable">
+            <thead>
+              <tr>
+                <th>Співробітник</th>
+                <th>Email</th>
+                <th>Відділ</th>
+                <th>Посада</th>
+                <th>Роль</th>
+                <th>Статус</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody id="employeesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── TAB: НОВИНИ ── -->
+      <div id="adminTabNews" class="admin-tab" style="display:none">
+        <div class="admin-section-header">
+          <h2>Керування новинами</h2>
+          <button class="btn-primary btn-sm" onclick="openModal('createNewsModal')">+ Нова новина</button>
+        </div>
+        <div id="adminNewsList" class="admin-news-list"></div>
+      </div>
+
+      <!-- ── TAB: ДОКУМЕНТИ ── -->
+      <div id="adminTabDocs" class="admin-tab" style="display:none">
+        <div class="admin-section-header">
+          <h2>Керування документами</h2>
+          <button class="btn-primary btn-sm" onclick="openModal('createDocModal')">+ Новий документ</button>
+        </div>
+        <div id="adminDocsList" class="admin-docs-list"></div>
+      </div>
+
+      <!-- ── TAB: ЖУРНАЛ ── -->
+      <div id="adminTabLog" class="admin-tab" style="display:none">
+        <div class="admin-section-header">
+          <h2>Журнал доступу</h2>
+          <button class="btn-secondary btn-sm" onclick="clearLog()">🗑 Очистити</button>
+        </div>
+        <div class="admin-log-filters">
+          <button class="log-filter-btn active" onclick="filterLog('all',this)">Всі</button>
+          <button class="log-filter-btn" onclick="filterLog('LOGIN_OK',this)">🟢 Входи</button>
+          <button class="log-filter-btn" onclick="filterLog('ACCESS_DENIED',this)">🔴 Відмови</button>
+          <button class="log-filter-btn" onclick="filterLog('LOGOUT',this)">⬛ Виходи</button>
+        </div>
+        <div id="adminLogList" class="admin-log-list"></div>
+      </div>
+
+      <!-- ── TAB: ЗАЯВКИ ── -->
+      <div id="adminTabRequests" class="admin-tab" style="display:none">
+        <div class="admin-section-header">
+          <h2>Заявки на роботу</h2>
+        </div>
+        <div id="adminRequestsList"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── МОДАЛКА: Новий співробітник ── -->
+  <div class="modal-overlay" id="createEmployeeModal" onclick="closeModalOutside(event,'createEmployeeModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('createEmployeeModal')">✕</button>
+      <h2 class="modal-title">Новий співробітник</h2>
+      <form onsubmit="submitCreateEmployee(event)">
+        <div class="form-group">
+          <label>Ім'я та прізвище</label>
+          <input type="text" id="empName" placeholder="Іван Танич" required/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="empEmail" placeholder="ivan@workhub.com" required/>
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" id="empPassword" placeholder="Мінімум 6 символів" required/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Відділ</label>
+            <select id="empDept">
+              <option value="it">💻 IT відділ</option>
+              <option value="hr">👤 HR відділ</option>
+              <option value="accounting">📊 Бухгалтерія</option>
+              <option value="marketing">📣 Маркетинг</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Роль</label>
+            <select id="empRole">
+              <option value="employee">Співробітник</option>
+              <option value="manager">Керівник</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Посада</label>
+          <input type="text" id="empPosition" placeholder="Frontend розробник"/>
+        </div>
+        <div id="empError" class="form-error" style="display:none"></div>
+        <button type="submit" class="btn-primary btn-full">Створити акаунт</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── МОДАЛКА: Редагувати користувача ── -->
+  <div class="modal-overlay" id="editUserModal" onclick="closeModalOutside(event,'editUserModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('editUserModal')">✕</button>
+      <h2 class="modal-title">Редагувати користувача</h2>
+      <input type="hidden" id="editUserId"/>
+      <form onsubmit="submitEditUser(event)">
+        <div class="form-group">
+          <label>Ім'я та прізвище</label>
+          <input type="text" id="editUserName" required/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="editUserEmail" required/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Роль</label>
+            <select id="editUserRole">
+              <option value="user">Користувач</option>
+              <option value="employee">Співробітник</option>
+              <option value="manager">Керівник</option>
+              <option value="admin">Адміністратор</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Відділ</label>
+            <select id="editUserDept">
+              <option value="">— Немає —</option>
+              <option value="it">💻 IT відділ</option>
+              <option value="hr">👤 HR відділ</option>
+              <option value="accounting">📊 Бухгалтерія</option>
+              <option value="marketing">📣 Маркетинг</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Посада</label>
+          <input type="text" id="editUserPosition"/>
+        </div>
+        <div id="editUserError" class="form-error" style="display:none"></div>
+        <button type="submit" class="btn-primary btn-full">Зберегти зміни</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── МОДАЛКА: Нова новина ── -->
+  <div class="modal-overlay" id="createNewsModal" onclick="closeModalOutside(event,'createNewsModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('createNewsModal')">✕</button>
+      <h2 class="modal-title" id="newsModalTitle">Нова новина</h2>
+      <input type="hidden" id="editNewsId"/>
+      <form onsubmit="submitNews(event)">
+        <div class="form-group">
+          <label>Заголовок</label>
+          <input type="text" id="newsTitle" placeholder="Заголовок новини" required/>
+        </div>
+        <div class="form-group">
+          <label>Зміст</label>
+          <textarea id="newsContent" rows="4" placeholder="Текст новини..." required></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Тег</label>
+            <select id="newsTag">
+              <option value="Компанія">Компанія</option>
+              <option value="IT відділ">IT відділ</option>
+              <option value="HR">HR</option>
+              <option value="Маркетинг">Маркетинг</option>
+              <option value="Бухгалтерія">Бухгалтерія</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Публічна</label>
+            <select id="newsPublic">
+              <option value="true">Так (видима всім)</option>
+              <option value="false">Ні (тільки для співробітників)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Дата</label>
+          <input type="date" id="newsDate"/>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Зберегти новину</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── МОДАЛКА: Новий документ ── -->
+  <div class="modal-overlay" id="createDocModal" onclick="closeModalOutside(event,'createDocModal')">
+    <div class="modal" style="max-width:560px">
+      <button class="modal-close" onclick="closeModal('createDocModal')">✕</button>
+      <h2 class="modal-title" id="docModalTitle">Новий документ</h2>
+      <input type="hidden" id="editDocId"/>
+      <form onsubmit="submitDoc(event)">
+        <div class="form-group">
+          <label>Назва документа</label>
+          <input type="text" id="docTitle" placeholder="Назва документа" required/>
+        </div>
+        <div class="form-group">
+          <label>Вміст (Markdown)</label>
+          <textarea id="docContent" rows="8" placeholder="# Заголовок&#10;&#10;Текст документа..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Відділ</label>
+            <select id="docDept">
+              <option value="">Для всіх</option>
+              <option value="it">IT відділ</option>
+              <option value="hr">HR відділ</option>
+              <option value="accounting">Бухгалтерія</option>
+              <option value="marketing">Маркетинг</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Мінімальна роль</label>
+            <select id="docAccess">
+              <option value="employee">Співробітник+</option>
+              <option value="manager">Керівник+</option>
+              <option value="admin">Тільки адмін</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary btn-full">Зберегти документ</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/admin.js"></script>
+  <script>
+    const session = requireAdmin();
+    if (session) initAdmin(session);
+  </script>
+</body>
+</html>

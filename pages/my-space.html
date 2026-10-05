@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Мій простір — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/my-space.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div><span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Головне</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="sl-icon">📊</span> Дашборд</a>
+      <a href="my-space.html"  class="sidebar-link active"><span class="sl-icon">👤</span> Мій простір</a>
+      <a href="tasks.html"     class="sidebar-link"><span class="sl-icon">✅</span> Задачі</a>
+      <a href="notes.html"     class="sidebar-link"><span class="sl-icon">📝</span> Нотатки</a>
+      <div class="nav-section-label">Відділ</div>
+      <a href="department.html" class="sidebar-link"><span class="sl-icon">📁</span> Мій відділ</a>
+      <a href="docs.html"       class="sidebar-link"><span class="sl-icon">📄</span> Документи</a>
+      <a href="team.html"       class="sidebar-link"><span class="sl-icon">👥</span> Команда</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Мій простір</div>
+      <div class="topbar-right">
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+
+      <!-- Профіль -->
+      <div class="profile-hero">
+        <div class="profile-avatar" id="profileAvatar"></div>
+        <div class="profile-info">
+          <h1 id="profileName"></h1>
+          <div class="profile-meta" id="profileMeta"></div>
+          <div class="profile-dept" id="profileDept"></div>
+        </div>
+        <button class="btn-secondary btn-sm" onclick="openEditProfile()">✏️ Редагувати</button>
+      </div>
+
+      <!-- Вкладки -->
+      <div class="space-tabs">
+        <button class="space-tab active" onclick="switchTab('duties', this)">📋 Обов'язки</button>
+        <button class="space-tab" onclick="switchTab('instructions', this)">📖 Інструкції</button>
+        <button class="space-tab" onclick="switchTab('activity', this)">⚡ Активність</button>
+      </div>
+
+      <!-- Вміст вкладок -->
+      <div id="tabDuties" class="tab-content">
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>Мої обов'язки</h3>
+          </div>
+          <div id="dutiesList" class="duties-full-list"></div>
+        </div>
+      </div>
+
+      <div id="tabInstructions" class="tab-content" style="display:none">
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>Інструкції для моєї посади</h3>
+          </div>
+          <div id="instructionsList"></div>
+        </div>
+      </div>
+
+      <div id="tabActivity" class="tab-content" style="display:none">
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>Моя активність</h3>
+          </div>
+          <div id="activityList"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Модалка редагування профілю -->
+  <div class="modal-overlay" id="editProfileModal" onclick="closeModalOutside(event,'editProfileModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+      <h2 class="modal-title">Редагувати профіль</h2>
+      <form onsubmit="saveProfile(event)">
+        <div class="form-group">
+          <label>Ім'я та прізвище</label>
+          <input type="text" id="editName" required/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="editEmail" required/>
+        </div>
+        <div class="form-group">
+          <label>Новий пароль (залиш порожнім якщо не змінюєш)</label>
+          <input type="password" id="editPassword" placeholder="Мінімум 6 символів"/>
+        </div>
+        <div id="editProfileError" class="form-error" style="display:none"></div>
+        <button type="submit" class="btn-primary btn-full">Зберегти</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/my-space.js"></script>
+  <script>
+    const session = requireEmployee();
+    if (session) initMySpace(session);
+  </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+/* ═══════════════════════════════════════════
+   WorkHub — Стилі відділу
+═══════════════════════════════════════════ */
+
+/* ── Dept Hero ── */
+.dept-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.dept-hero-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.dept-hero-info { flex: 1; min-width: 0; }
+.dept-hero-info h1 { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+.dept-hero-info p  { font-size: 0.85rem; color: var(--text-soft); }
+
+.dept-hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.dept-stat { text-align: center; }
+.dept-stat-num   { font-size: 1.4rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.dept-stat-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+.dept-stat-div   { width: 1px; height: 32px; background: var(--border); }
+
+/* ── Dept News Grid ── */
+.dept-news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* ── Dept Tasks ── */
+.dept-tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dept-task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s;
+  flex-wrap: wrap;
+}
+.dept-task-item:hover { border-color: var(--border-hover); }
+
+.dti-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+.dti-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.dti-title     { font-size: 0.85rem; font-weight: 600; margin-bottom: 3px; }
+.dti-title.done{ text-decoration: line-through; opacity: 0.5; }
+.dti-desc      { font-size: 0.75rem; color: var(--text-muted); }
+
+.dti-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.dti-assignee {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+}
+.dti-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  font-weight: 700;
+}
+.dti-unassigned { font-size: 0.75rem; color: var(--text-muted); }
+.dti-status     { font-size: 0.75rem; font-weight: 600; }
+.dti-due        { font-size: 0.72rem; color: var(--text-muted); }
+.dti-due.overdue{ color: #FCA5A5; }
+
+/* ── Адаптивність ── */
+@media (max-width: 768px) {
+  .dept-hero { flex-direction: column; }
+  .dept-hero-stats { justify-content: center; }
+  .dept-task-item { flex-direction: column; align-items: flex-start; }
+}

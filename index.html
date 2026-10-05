@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WorkHub — Внутрішня система управління</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/final.css"/>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">W</div>
+        <span>WorkHub</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">Про нас</a></li>
+        <li><a href="#departments">Відділи</a></li>
+        <li><a href="#news">Новини</a></li>
+        <li><a href="#team">Команда</a></li>
+        <li><a href="#join">Вакансії</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-ghost" onclick="openModal('loginModal')">Увійти</button>
+        <button class="btn-primary" onclick="openModal('registerModal')">Реєстрація</button>
+      </div>
+
+      <button class="burger" id="burger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">Корпоративна платформа</div>
+      <h1 class="hero-title">
+        Один простір для<br/>
+        <span class="gradient-text">всієї команди</span>
+      </h1>
+      <p class="hero-desc">
+        WorkHub — внутрішній портал компанії де кожен співробітник має свій особистий простір, задачі та документи. Кожен відділ працює у своєму захищеному середовищі.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary btn-lg" onclick="openModal('loginModal')">Увійти в систему</button>
+        <a href="#about" class="btn-outline btn-lg">Дізнатись більше</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">4</span>
+          <span class="stat-label">Відділи</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">5</span>
+          <span class="stat-label">Рівнів доступу</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Захищено</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="dashboard-preview">
+        <div class="preview-bar">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="preview-title">WorkHub Dashboard</span>
+        </div>
+        <div class="preview-body">
+          <div class="preview-sidebar">
+            <div class="ps-item active">📊 Дашборд</div>
+            <div class="ps-item">📁 Мій відділ</div>
+            <div class="ps-item">✅ Задачі</div>
+            <div class="ps-item">📝 Нотатки</div>
+            <div class="ps-item">👤 Профіль</div>
+          </div>
+          <div class="preview-main">
+            <div class="pm-greeting">Привіт, Іване 👋</div>
+            <div class="pm-cards">
+              <div class="pm-card blue">
+                <div class="pm-card-num">12</div>
+                <div class="pm-card-label">Задачі</div>
+              </div>
+              <div class="pm-card purple">
+                <div class="pm-card-num">5</div>
+                <div class="pm-card-label">Документи</div>
+              </div>
+              <div class="pm-card green">
+                <div class="pm-card-num">3</div>
+                <div class="pm-card-label">Нотатки</div>
+              </div>
+            </div>
+            <div class="pm-task">
+              <div class="pm-task-dot"></div>
+              <span>Оновити документацію API</span>
+            </div>
+            <div class="pm-task">
+              <div class="pm-task-dot done"></div>
+              <span class="done-text">Code review модуля авторизації</span>
+            </div>
+            <div class="pm-task">
+              <div class="pm-task-dot"></div>
+              <span>Зустріч з командою о 15:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       ПРО НАС
+  ═══════════════════════════════════════ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2>Про WorkHub</h2>
+        <p>Платформа яка об'єднує всіх співробітників компанії в єдиному захищеному просторі</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔐</div>
+          <h3>Контроль доступу</h3>
+          <p>Кожен співробітник бачить тільки те що потрібно для його роботи. Повна безпека і конфіденційність даних.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👥</div>
+          <h3>Відділи і команди</h3>
+          <p>Кожен відділ має свій захищений простір з документами, задачами та новинами.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3>Особистий простір</h3>
+          <p>Власні задачі, нотатки прив'язані до документів, обов'язки та інструкції для кожного.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Швидко і зручно</h3>
+          <p>Сучасний інтерфейс який працює на будь-якому пристрої. Все що потрібно — в одному місці.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       ВІДДІЛИ
+  ═══════════════════════════════════════ -->
+  <section class="section section-alt" id="departments">
+    <div class="container">
+      <div class="section-header">
+        <h2>Наші відділи</h2>
+        <p>Чотири ключові відділи компанії — кожен зі своїми задачами і зоною відповідальності</p>
+      </div>
+      <div class="departments-grid">
+        <div class="dept-card">
+          <div class="dept-icon" style="background: linear-gradient(135deg,#7C3AED,#3B82F6)">💻</div>
+          <h3>IT відділ</h3>
+          <p>Розробка та підтримка програмних продуктів, технічна інфраструктура компанії, кібербезпека.</p>
+          <ul class="dept-list">
+            <li>Розробка ПЗ</li>
+            <li>Технічна підтримка</li>
+            <li>Безпека систем</li>
+          </ul>
+        </div>
+        <div class="dept-card">
+          <div class="dept-icon" style="background: linear-gradient(135deg,#059669,#0EA5E9)">📊</div>
+          <h3>Бухгалтерія</h3>
+          <p>Фінансовий облік, звітність, планування бюджету та контроль витрат компанії.</p>
+          <ul class="dept-list">
+            <li>Фінансові звіти</li>
+            <li>Бюджетування</li>
+            <li>Облік операцій</li>
+          </ul>
+        </div>
+        <div class="dept-card">
+          <div class="dept-icon" style="background: linear-gradient(135deg,#DC2626,#F59E0B)">👤</div>
+          <h3>HR відділ</h3>
+          <p>Підбір персоналу, адаптація нових співробітників, корпоративна культура і розвиток команди.</p>
+          <ul class="dept-list">
+            <li>Рекрутинг</li>
+            <li>Адаптація</li>
+            <li>Навчання</li>
+          </ul>
+        </div>
+        <div class="dept-card">
+          <div class="dept-icon" style="background: linear-gradient(135deg,#7C3AED,#EC4899)">📣</div>
+          <h3>Маркетинг</h3>
+          <p>Просування продуктів компанії, контент-стратегія, аналітика та робота з клієнтами.</p>
+          <ul class="dept-list">
+            <li>Контент-план</li>
+            <li>Аналітика</li>
+            <li>Реклама</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       НОВИНИ
+  ═══════════════════════════════════════ -->
+  <section class="section" id="news">
+    <div class="container">
+      <div class="section-header">
+        <h2>Новини компанії</h2>
+        <p>Останні події та оголошення</p>
+      </div>
+      <div class="news-grid" id="newsGrid">
+        <div class="news-card">
+          <div class="news-tag">Компанія</div>
+          <h3>WorkHub запускає нову версію порталу</h3>
+          <p>Ми раді представити оновлену версію внутрішнього порталу з покращеним інтерфейсом та новими функціями для співробітників.</p>
+          <div class="news-footer">
+            <span class="news-date">15 червня 2026</span>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-tag">IT відділ</div>
+          <h3>Нова система контролю доступу впроваджена</h3>
+          <p>IT відділ успішно впровадив рольову модель доступу. Тепер кожен співробітник має чітко визначені права.</p>
+          <div class="news-footer">
+            <span class="news-date">10 червня 2026</span>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="news-tag">HR</div>
+          <h3>Відкриті вакансії у всіх відділах</h3>
+          <p>Компанія активно розширюється. Шукаємо талановитих спеціалістів у IT, маркетинг та бухгалтерію.</p>
+          <div class="news-footer">
+            <span class="news-date">5 червня 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       КОМАНДА
+  ═══════════════════════════════════════ -->
+  <section class="section section-alt" id="team">
+    <div class="container">
+      <div class="section-header">
+        <h2>Наша команда</h2>
+        <p>Люди які рухають компанію вперед</p>
+      </div>
+      <div class="team-grid" id="teamGrid">
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#7C3AED,#3B82F6)">ОМ</div>
+          <h3>Олексій Мельник</h3>
+          <span class="team-role">CEO / Засновник</span>
+          <p>Понад 10 років досвіду в IT індустрії. Керує стратегічним розвитком компанії.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#059669,#0EA5E9)">АК</div>
+          <h3>Анна Коваленко</h3>
+          <span class="team-role">Head of IT</span>
+          <p>Керівник IT відділу. Спеціаліст з архітектури програмних систем та кібербезпеки.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#DC2626,#F59E0B)">МП</div>
+          <h3>Марія Петренко</h3>
+          <span class="team-role">HR Director</span>
+          <p>Відповідає за підбір персоналу та корпоративну культуру компанії.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,#7C3AED,#EC4899)">ВС</div>
+          <h3>Василь Сидоренко</h3>
+          <span class="team-role">Marketing Lead</span>
+          <p>Керує маркетинговою стратегією та просуванням продуктів компанії.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       ВАКАНСІЇ / ФОРМА
+  ═══════════════════════════════════════ -->
+  <section class="section join-section" id="join">
+    <div class="container">
+      <div class="join-wrapper">
+        <div class="join-info">
+          <h2>Хочеш до нас в команду?</h2>
+          <p>Ми постійно шукаємо талановитих людей які хочуть розвиватись і робити щось цінне. Заповни форму і ми зв'яжемось з тобою.</p>
+          <ul class="join-perks">
+            <li>✦ Сучасний офіс та remote можливості</li>
+            <li>✦ Конкурентна заробітна плата</li>
+            <li>✦ Навчання та розвиток</li>
+            <li>✦ Дружня команда</li>
+          </ul>
+        </div>
+        <form class="join-form" id="joinForm" onsubmit="submitJoinForm(event)">
+          <h3>Залишити заявку</h3>
+          <div class="form-group">
+            <label>Ім'я та прізвище</label>
+            <input type="text" placeholder="Іван Танич" required />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="ivan@email.com" required />
+          </div>
+          <div class="form-group">
+            <label>Відділ який цікавить</label>
+            <select required>
+              <option value="">Оберіть відділ</option>
+              <option>IT відділ</option>
+              <option>Бухгалтерія</option>
+              <option>HR відділ</option>
+              <option>Маркетинг</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Розкажи про себе</label>
+            <textarea placeholder="Кілька слів про твій досвід та чому хочеш до нас..." rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn-primary btn-full">Надіслати заявку</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <div class="logo-icon">W</div>
+            <span>WorkHub</span>
+          </div>
+          <p>Внутрішня система управління співробітниками та відділами компанії.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Навігація</h4>
+            <a href="#about">Про нас</a>
+            <a href="#departments">Відділи</a>
+            <a href="#news">Новини</a>
+            <a href="#team">Команда</a>
+          </div>
+          <div class="footer-col">
+            <h4>Система</h4>
+            <a href="#" onclick="openModal('loginModal')">Увійти</a>
+            <a href="#" onclick="openModal('registerModal')">Реєстрація</a>
+            <a href="#join">Вакансії</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 WorkHub. Всі права захищені.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       МОДАЛКА ВХОДУ
+  ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="loginModal" onclick="closeModalOutside(event, 'loginModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+      <div class="modal-logo">
+        <div class="logo-icon">W</div>
+        <span>WorkHub</span>
+      </div>
+      <h2 class="modal-title">Вхід в систему</h2>
+      <p class="modal-sub">Введіть свої дані для входу</p>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Логін або Email</label>
+          <input type="text" id="loginEmail" placeholder="ivan@workhub.com" required />
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <div class="input-password">
+            <input type="password" id="loginPassword" placeholder="••••••••" required />
+            <button type="button" class="toggle-pass" onclick="togglePass('loginPassword', this)">👁</button>
+          </div>
+        </div>
+        <div id="loginError" class="form-error" style="display:none"></div>
+        <button type="submit" class="btn-primary btn-full">Увійти</button>
+      </form>
+
+      <div class="modal-footer">
+        Ще немає акаунту?
+        <button class="link-btn" onclick="switchModal('loginModal','registerModal')">Зареєструватись</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       МОДАЛКА РЕЄСТРАЦІЇ
+  ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="registerModal" onclick="closeModalOutside(event, 'registerModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+      <div class="modal-logo">
+        <div class="logo-icon">W</div>
+        <span>WorkHub</span>
+      </div>
+      <h2 class="modal-title">Реєстрація</h2>
+      <p class="modal-sub">Створіть публічний акаунт</p>
+
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label>Ім'я та прізвище</label>
+          <input type="text" id="regName" placeholder="Іван Танич" required />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="regEmail" placeholder="ivan@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <div class="input-password">
+            <input type="password" id="regPassword" placeholder="Мінімум 6 символів" required />
+            <button type="button" class="toggle-pass" onclick="togglePass('regPassword', this)">👁</button>
+          </div>
+        </div>
+        <div id="registerError" class="form-error" style="display:none"></div>
+        <div id="registerSuccess" class="form-success" style="display:none"></div>
+        <button type="submit" class="btn-primary btn-full">Зареєструватись</button>
+      </form>
+
+      <div class="modal-footer">
+        Вже маєш акаунт?
+        <button class="link-btn" onclick="switchModal('registerModal','loginModal')">Увійти</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast повідомлення -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

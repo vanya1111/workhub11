@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Нотатки — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/notes.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div>
+        <span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Головне</div>
+      <a href="dashboard.html" class="sidebar-link">
+        <span class="sl-icon">📊</span> Дашборд
+      </a>
+      <a href="my-space.html" class="sidebar-link">
+        <span class="sl-icon">👤</span> Мій простір
+      </a>
+      <a href="tasks.html" class="sidebar-link">
+        <span class="sl-icon">✅</span> Задачі
+      </a>
+      <a href="notes.html" class="sidebar-link active">
+        <span class="sl-icon">📝</span> Нотатки
+      </a>
+      <div class="nav-section-label">Відділ</div>
+      <a href="department.html" class="sidebar-link">
+        <span class="sl-icon">📁</span> Мій відділ
+      </a>
+      <a href="docs.html" class="sidebar-link">
+        <span class="sl-icon">📄</span> Документи
+      </a>
+      <a href="team.html" class="sidebar-link">
+        <span class="sl-icon">👥</span> Команда
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Нотатки</div>
+      <div class="topbar-right">
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+      <div class="notes-layout">
+
+        <!-- Ліва панель — список нотаток -->
+        <div class="notes-sidebar">
+          <div class="notes-sidebar-header">
+            <h2>Нотатки</h2>
+            <button class="btn-primary btn-sm" onclick="createNote()">+ Нова</button>
+          </div>
+
+          <!-- Фільтр -->
+          <div class="notes-filter">
+            <button class="notes-filter-btn active" onclick="filterNotes('all', this)">Всі</button>
+            <button class="notes-filter-btn" onclick="filterNotes('plain', this)">Звичайні</button>
+            <button class="notes-filter-btn" onclick="filterNotes('linked', this)">З документів</button>
+          </div>
+
+          <div class="notes-list" id="notesList"></div>
+        </div>
+
+        <!-- Права панель — редактор нотатки -->
+        <div class="notes-editor" id="notesEditor">
+          <div class="notes-empty-state" id="notesEmptyState">
+            <div class="notes-empty-icon">📝</div>
+            <h3>Оберіть нотатку</h3>
+            <p>або створіть нову натиснувши кнопку «+ Нова»</p>
+          </div>
+
+          <!-- Редактор -->
+          <div class="note-edit-form" id="noteEditForm" style="display:none">
+            <div class="note-edit-header">
+              <input
+                type="text"
+                id="noteTitle"
+                class="note-title-input"
+                placeholder="Назва нотатки..."
+              />
+              <div class="note-edit-actions">
+                <button class="btn-primary btn-sm" onclick="saveCurrentNote()">Зберегти</button>
+                <button class="btn-danger btn-sm" id="deleteNoteBtn" onclick="deleteCurrentNote()">🗑</button>
+              </div>
+            </div>
+
+            <!-- Якщо нотатка з документа -->
+            <div class="note-doc-link" id="noteDocLink" style="display:none">
+              <div class="ndl-info">
+                <span class="ndl-icon">📎</span>
+                <div>
+                  <div class="ndl-label">З документа</div>
+                  <div class="ndl-docname" id="ndlDocName"></div>
+                </div>
+              </div>
+              <button class="btn-secondary btn-sm" onclick="goToLinkedDoc()">
+                Перейти до документа →
+              </button>
+            </div>
+
+            <!-- Виділений текст з документа -->
+            <div class="note-quoted-text" id="noteQuotedText" style="display:none">
+              <div class="nqt-label">Виділений текст</div>
+              <div class="nqt-text" id="nqtContent"></div>
+            </div>
+
+            <textarea
+              id="noteText"
+              class="note-textarea"
+              placeholder="Пишіть нотатку тут..."
+            ></textarea>
+
+            <div class="note-meta" id="noteMeta"></div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/notes.js"></script>
+  <script>
+    const session = requireEmployee();
+    if (session) initNotes(session);
+  </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Дашборд — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div>
+        <span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Головне</div>
+      <a href="dashboard.html" class="sidebar-link active">
+        <span class="sl-icon">📊</span> Дашборд
+      </a>
+      <a href="my-space.html" class="sidebar-link">
+        <span class="sl-icon">👤</span> Мій простір
+      </a>
+      <a href="tasks.html" class="sidebar-link">
+        <span class="sl-icon">✅</span> Задачі
+      </a>
+      <a href="notes.html" class="sidebar-link">
+        <span class="sl-icon">📝</span> Нотатки
+      </a>
+
+      <div class="nav-section-label">Відділ</div>
+      <a href="department.html" class="sidebar-link">
+        <span class="sl-icon">📁</span> Мій відділ
+      </a>
+      <a href="docs.html" class="sidebar-link">
+        <span class="sl-icon">📄</span> Документи
+      </a>
+      <a href="team.html" class="sidebar-link">
+        <span class="sl-icon">👥</span> Команда
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="app-main">
+
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topbarTitle">Дашборд</div>
+      <div class="topbar-right">
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="app-content">
+
+      <!-- Привітання -->
+      <div class="dash-greeting">
+        <div>
+          <h1 id="greetingText">Привіт 👋</h1>
+          <p id="greetingRole" class="text-muted"></p>
+        </div>
+        <div class="dash-date" id="dashDate"></div>
+      </div>
+
+      <!-- Статистика -->
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card">
+          <div class="stat-card-icon" style="background:rgba(124,58,237,0.15);color:#A78BFA">✅</div>
+          <div class="stat-card-body">
+            <div class="stat-card-num" id="statMyTasks">—</div>
+            <div class="stat-card-label">Мої задачі</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon" style="background:rgba(59,130,246,0.15);color:#60A5FA">📄</div>
+          <div class="stat-card-body">
+            <div class="stat-card-num" id="statDocs">—</div>
+            <div class="stat-card-label">Документи</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon" style="background:rgba(16,185,129,0.15);color:#34D399">📝</div>
+          <div class="stat-card-body">
+            <div class="stat-card-num" id="statNotes">—</div>
+            <div class="stat-card-label">Нотатки</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon" style="background:rgba(245,158,11,0.15);color:#FBBF24">👥</div>
+          <div class="stat-card-body">
+            <div class="stat-card-num" id="statTeam">—</div>
+            <div class="stat-card-label">В команді</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Основна сітка -->
+      <div class="dash-grid">
+
+        <!-- Мої задачі -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>Мої задачі</h3>
+            <a href="tasks.html" class="app-card-link">Всі →</a>
+          </div>
+          <div id="myTasksList" class="tasks-list-mini"></div>
+        </div>
+
+        <!-- Відділ і обов'язки -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>Мої обов'язки</h3>
+            <a href="my-space.html" class="app-card-link">Детальніше →</a>
+          </div>
+          <div id="myDutiesList" class="duties-list-mini"></div>
+        </div>
+
+        <!-- Останні нотатки -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>Нотатки</h3>
+            <a href="notes.html" class="app-card-link">Всі →</a>
+          </div>
+          <div id="myNotesList" class="notes-list-mini"></div>
+          <button class="btn-primary btn-sm" onclick="location.href='notes.html'" style="margin-top:12px">
+            + Нова нотатка
+          </button>
+        </div>
+
+        <!-- Новини відділу -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>Новини компанії</h3>
+            <a href="department.html" class="app-card-link">Відділ →</a>
+          </div>
+          <div id="dashNewsList" class="news-list-mini"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    const session = requireEmployee();
+    if (session) initDashboard(session);
+  </script>
+</body>
+</html>

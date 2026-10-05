@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Мій профіль — WorkHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/app.css"/>
+  <link rel="stylesheet" href="../css/my-space.css"/>
+  <link rel="stylesheet" href="../css/final.css"/>
+</head>
+<body class="app-body">
+
+  <!-- Мінімальний сайдбар для публічного юзера -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">W</div><span>WorkHub</span>
+      </a>
+      <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Мій простір</div>
+      <a href="public-profile.html" class="sidebar-link active">
+        <span class="sl-icon">👤</span> Мій профіль
+      </a>
+      <a href="public-news.html" class="sidebar-link">
+        <span class="sl-icon">📢</span> Новини
+      </a>
+      <a href="../index.html#departments" class="sidebar-link">
+        <span class="sl-icon">🏢</span> Відділи
+      </a>
+      <a href="../index.html#join" class="sidebar-link">
+        <span class="sl-icon">📩</span> Вакансії
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <button class="sidebar-logout" onclick="logout()">
+        <span>🚪</span> Вийти
+      </button>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <button class="topbar-burger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Мій профіль</div>
+      <div class="topbar-right">
+        <a href="../index.html" class="btn-secondary btn-sm">← На головну</a>
+        <div class="topbar-user" id="topbarUser"></div>
+      </div>
+    </header>
+
+    <main class="app-content">
+
+      <!-- Інфобанер -->
+      <div class="public-user-banner">
+        <div class="pub-banner-icon">ℹ️</div>
+        <div class="pub-banner-text">
+          <strong>Публічний акаунт</strong>
+          <p>Ви зареєстровані як публічний користувач. Для доступу до внутрішнього порталу — зверніться до адміністратора компанії або заповніть форму вакансії.</p>
+        </div>
+        <a href="../index.html#join" class="btn-primary btn-sm">Подати заявку →</a>
+      </div>
+
+      <!-- Профіль -->
+      <div class="profile-hero">
+        <div class="profile-avatar" id="profileAvatar"></div>
+        <div class="profile-info">
+          <h1 id="profileName"></h1>
+          <div class="profile-meta" id="profileMeta"></div>
+        </div>
+        <button class="btn-secondary btn-sm" onclick="openEditProfile()">✏️ Редагувати</button>
+      </div>
+
+      <!-- Публічний контент -->
+      <div class="public-content-grid">
+
+        <!-- Новини (публічні) -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>📢 Останні новини</h3>
+            <a href="public-news.html" class="app-card-link">Всі →</a>
+          </div>
+          <div id="publicNewsList" class="news-list-mini"></div>
+        </div>
+
+        <!-- Відділи -->
+        <div class="app-card">
+          <div class="app-card-header">
+            <h3>🏢 Відділи компанії</h3>
+          </div>
+          <div id="publicDeptsList" class="public-depts-list"></div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Модалка редагування профілю -->
+  <div class="modal-overlay" id="editProfileModal" onclick="closeModalOutside(event,'editProfileModal')">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+      <h2 class="modal-title">Редагувати профіль</h2>
+      <form onsubmit="savePublicProfile(event)">
+        <div class="form-group">
+          <label>Ім'я та прізвище</label>
+          <input type="text" id="pubEditName" required/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="pubEditEmail" required/>
+        </div>
+        <div class="form-group">
+          <label>Новий пароль (залиш порожнім якщо не змінюєш)</label>
+          <input type="password" id="pubEditPassword" placeholder="Мінімум 6 символів"/>
+        </div>
+        <div id="pubEditError" class="form-error" style="display:none"></div>
+        <button type="submit" class="btn-primary btn-full">Зберегти</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    // Перевірити що юзер залогінений (будь-яка роль)
+    const session = requireAuth("user");
+
+    if (session) {
+      renderSidebarUser(session);
+      renderTopbarUser(session);
+
+      // Профіль
+      const avatarEl = document.getElementById("profileAvatar");
+      const nameEl   = document.getElementById("profileName");
+      const metaEl   = document.getElementById("profileMeta");
+
+      if (avatarEl) { avatarEl.style.background = session.avatarColor; avatarEl.textContent = session.avatar; }
+      if (nameEl)   nameEl.textContent = session.name;
+      if (metaEl)   metaEl.innerHTML = `
+        <span>${escHtml(session.email)}</span>
+        <span class="profile-dot">·</span>
+        <span class="role-badge">${ROLE_LABELS[session.role]}</span>
+      `;
+
+      // Публічні новини
+      const newsEl = document.getElementById("publicNewsList");
+      if (newsEl) {
+        const news = getNews(true).slice(0, 4);
+        newsEl.innerHTML = news.length
+          ? news.map(n => `
+              <div class="news-mini">
+                <div class="news-mini-title">${escHtml(n.title)}</div>
+                <div class="news-mini-date">${formatDate(n.date)}</div>
+              </div>
+            `).join("")
+          : `<div class="empty-mini">Новин немає</div>`;
+      }
+
+      // Відділи
+      const deptsEl = document.getElementById("publicDeptsList");
+      if (deptsEl) {
+        const depts = Object.values(getDepts());
+        deptsEl.innerHTML = depts.map(d => `
+          <div class="public-dept-item">
+            <div class="pub-dept-icon" style="background:${d.color}">${d.icon}</div>
+            <div>
+              <div class="pub-dept-name">${escHtml(d.name)}</div>
+              <div class="pub-dept-desc">${escHtml(d.description)}</div>
+            </div>
+          </div>
+        `).join("");
+      }
+    }
+
+    // Редагування профілю
+    function openEditProfile() {
+      const s = getSession();
+      document.getElementById("pubEditName").value  = s.name;
+      document.getElementById("pubEditEmail").value = s.email;
+      document.getElementById("pubEditPassword").value = "";
+      document.getElementById("pubEditError").style.display = "none";
+      openModal("editProfileModal");
+    }
+
+    function savePublicProfile(event) {
+      event.preventDefault();
+      const s        = getSession();
+      const name     = document.getElementById("pubEditName").value.trim();
+      const email    = document.getElementById("pubEditEmail").value.trim().toLowerCase();
+      const password = document.getElementById("pubEditPassword").value;
+      const errorEl  = document.getElementById("pubEditError");
+
+      if (password && password.length < 6) {
+        errorEl.textContent = "Пароль мінімум 6 символів";
+        errorEl.style.display = "block";
+        return;
+      }
+
+      const existing = getUserByEmail(email);
+      if (existing && existing.id !== s.id) {
+        errorEl.textContent = "Цей email вже використовується";
+        errorEl.style.display = "block";
+        return;
+      }
+
+      const users   = getUsers();
+      const idx     = users.findIndex(u => u.id === s.id);
+      if (idx === -1) return;
+
+      const initials = name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+      users[idx].name   = name;
+      users[idx].email  = email;
+      users[idx].avatar = initials;
+      if (password) users[idx].password = password;
+      saveUsers(users);
+
+      const updated = { ...s, name, email, avatar: initials };
+      sessionStorage.setItem(DB.SESSION, JSON.stringify(updated));
+
+      closeModal("editProfileModal");
+      location.reload();
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.add("active"); document.body.style.overflow = "hidden"; }
+    }
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) { el.classList.remove("active"); document.body.style.overflow = ""; }
+    }
+    function closeModalOutside(e, id) {
+      if (e.target === e.currentTarget) closeModal(id);
+    }
+  </script>
+</body>
+</html>
